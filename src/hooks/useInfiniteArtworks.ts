@@ -1,0 +1,37 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
+import type { FilterModel } from "../types/filter";
+import type { Artwork } from "../types/artwork";
+import artworkService from "../services/artworkService";
+
+const PAGE_SIZE = 20;
+
+export function useInfiniteArtworks(ids: number[]) {
+    return useInfiniteQuery({
+        queryKey: ["artworks", ids],
+
+        queryFn: async ({ pageParam = 0, signal }) => {
+
+            // 2️⃣ Slice IDs for current page
+            const pageIds = ids.slice(pageParam, pageParam + PAGE_SIZE);
+
+            // 3️⃣ 🚨 IMPORTANT: use batch instead of parallel queries
+            const artworks = await artworkService.fetchArtworksBatch(
+                pageIds,
+                signal
+            );
+
+            return {
+                artworks,
+                nextPage: pageParam + PAGE_SIZE,
+                hasMore: pageParam + PAGE_SIZE < ids.length,
+            };
+        },
+
+        getNextPageParam: (lastPage) =>
+            lastPage.hasMore ? lastPage.nextPage : undefined,
+
+        enabled: ids.length > 0,
+        retry: false,
+        initialPageParam: 0,
+    });
+}

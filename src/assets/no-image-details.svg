@@ -1,0 +1,13 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#e5e7eb"></rect>
+
+  <g fill="none" stroke="#6b7280" stroke-width="3">
+    <rect x="350" y="180" width="500" height="360" rx="16"></rect>
+    <circle cx="470" cy="260" r="20"></circle>
+    <path d="M350 520 L500 400 L600 480 L700 360 L850 520"></path>
+  </g>
+
+  <text x="600" y="650" text-anchor="middle" font-size="28" fill="#4b5563">
+    Image not available
+  </text>
+</svg>
