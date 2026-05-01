@@ -1,6 +1,6 @@
 ## Demo
 
-Live demo: https://your-vercel-url.vercel.app
+Live demo: https://museum-intelligence-dashboard-five.vercel.app
 
 
 ## Overview
