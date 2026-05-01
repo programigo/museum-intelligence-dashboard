@@ -1,10 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import artworkService from "../services/artworkService";
+import type { FilterModel } from "../types/filter";
 
 const PAGE_SIZE = 20;
 
 export function useInfiniteArtworksSearch(
-    filters: { keyword: string; departmentId?: string },
+    filters: FilterModel,
     options?: { enabled: boolean }
 ) {
     return useInfiniteQuery({

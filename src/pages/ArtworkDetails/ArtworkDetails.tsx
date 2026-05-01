@@ -13,6 +13,7 @@ import RelatedArtworks from "./RelatedArtworks";
 import ArtworkDetailsSkeleton from "./skeletons/ArtworkDetailsSkeleton";
 import ArtworkImageContainer from "../../components/ArtworkImageContainer";
 import FavoriteIcon from "../../components/FavoriteIcon";
+import ErrorBlock from "../../components/ErrorBlock";
 
 export default function ArtworkDetails() {
     const { id: artworkId } = useParams<{ id: string }>();
@@ -76,6 +77,15 @@ export default function ArtworkDetails() {
 
     if (isArtworkDetailsLoading) {
         return <ArtworkDetailsSkeleton />
+    }
+
+    if (isError) {
+        return (
+            <ErrorBlock
+                title="An error occured"
+                message={error.message || "Failed to fetch artwork"}
+            />
+        )
     }
 
     if (!artwork) {

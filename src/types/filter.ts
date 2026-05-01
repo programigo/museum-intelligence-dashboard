@@ -5,5 +5,5 @@ export type FilterModel = {
     dateEnd?: string;
     dateBeginEra?: "BC" | "AD";
     dateEndEra?: "BC" | "AD";
-    sortByDate: "Newest_First" | "Oldest_First";
+    sortByDate?: "Newest_First" | "Oldest_First";
 };
