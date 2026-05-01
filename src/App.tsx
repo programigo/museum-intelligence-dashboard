@@ -4,6 +4,7 @@ import Gallery from './pages/Gallery';
 import ArtworkDetails from './pages/ArtworkDetails/ArtworkDetails';
 import RootLayout from './pages/RootLayout';
 import ErrorPage from './pages/Error';
+import CollectionProvider from './store/collection/CollectionProvider';
 
 const router = createBrowserRouter([
   {
@@ -34,11 +35,14 @@ declare global {
   }
 }
 
+window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <CollectionProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </CollectionProvider>
   )
 }

@@ -1,6 +1,8 @@
 import { Link, useSearchParams } from "react-router";
 import type { Artwork } from "../types/artwork";
 import noImgPlaceholder from "../assets/no-image-card.svg";
+import FavoriteIcon from "./FavoriteIcon";
+import ArtworkImageContainer from "./ArtworkImageContainer";
 
 export default function ArtworkCard({ artwork }: ArtworkCardProps) {
     const [searchParams] = useSearchParams();
@@ -15,11 +17,17 @@ export default function ArtworkCard({ artwork }: ArtworkCardProps) {
             to={`/artworks/${artwork.id}?${searchParams.toString()}`}
             className="group bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg hover:scale-105 transition"
         >
-            <img
-                src={imageSrc}
-                alt={title}
-                className="w-full aspect-4/3 object-cover bg-gray-100"
-            />
+            <ArtworkImageContainer className="aspect-4/3">
+                <img
+                    src={imageSrc}
+                    alt={title}
+                    className="w-full aspect-4/3 object-cover bg-gray-100"
+                />
+                <div className="absolute top-2 right-2 z-10">
+                    <FavoriteIcon artworkId={artwork.id} />
+                </div>
+            </ArtworkImageContainer>
+
             <div className="p-4 space-y-1 text-center">
                 <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2">
                     {title}

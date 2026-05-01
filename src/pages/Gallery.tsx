@@ -21,6 +21,7 @@ export default function Gallery() {
         dateEnd: searchParams.get("dateEnd") ?? "",
         dateBeginEra: searchParams.get("dateBeginEra") === "BC" ? "BC" : "AD",
         dateEndEra: searchParams.get("dateEndEra") === "BC" ? "BC" : "AD",
+        sortByDate: searchParams.get("sortByDate") === "Newest_First" ? "Newest_First" : "Oldest_First",
     }), [searchParams]);
 
     const idsQuery = useArtworkIds(filters);
@@ -49,6 +50,15 @@ export default function Gallery() {
 
         return (!from || year >= from) && (!to || year <= to);
     });
+
+    const sortedArtworks: Artwork[] = [...filteredArtworks].sort((a, b) => {
+        const yearA = parseYear(a.date) ?? 0;
+        const yearB = parseYear(b.date) ?? 0;
+
+        return filters.sortByDate === "Newest_First"
+        ? yearB - yearA
+        : yearA - yearB
+    })
 
     const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -99,6 +109,10 @@ export default function Gallery() {
             params.set("dateEndEra", nextFilters.dateEndEra);
         }
 
+        if (nextFilters.sortByDate) {
+            params.set("sortByDate", nextFilters.sortByDate);
+        }
+
         setSearchParams(params);
     };
 
@@ -138,7 +152,7 @@ export default function Gallery() {
             ) : (
                 <>
                     {/* GRID */}
-                    <ArtworkGrid artworks={filteredArtworks} />
+                    <ArtworkGrid artworks={sortedArtworks} />
 
                     {/* LOADING NEXT PAGE (infinite scroll) */}
                     {isFetchingNextPage && (

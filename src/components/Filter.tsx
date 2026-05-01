@@ -105,6 +105,19 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                         <option value="BC">B.C.</option>
                         <option value="AD">A.D.</option>
                     </select>
+
+                    <select
+                        value={filters.sortByDate}
+                        onChange={(e) => onChange(
+                            {
+                                ...filters,
+                                sortByDate: e.target.value as "Newest_First" | "Oldest_First"
+                            })
+                        }
+                    >
+                        <option value="Newest_First">Newest first</option>
+                        <option value="Oldest_First">Oldest first</option>
+                    </select>
                 </div>
 
                 <button
@@ -118,7 +131,8 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                             dateEnd: "",
                             dateBeginEra: "AD",
                             dateEndEra: "AD",
-                        })
+                            sortByDate: "Newest_First",
+                        });
                     }}
                     className="text-gray-500 hover:text-black transition"
                 >

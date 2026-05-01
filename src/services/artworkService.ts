@@ -22,7 +22,7 @@ async function getArtworkIds(filters: FilterModel, signal?: AbortSignal): Promis
 
         const data = await response.json();
 
-        return (data.objectIDs ?? []).slice(0, 200);
+        return (data.objectIDs ?? []).slice(0, 1000);
     } catch (error: any) {
         if (error.name === "AbortError") {
             return [];
@@ -54,27 +54,51 @@ async function getArtworkById(id: number, signal?: AbortSignal): Promise<Artwork
 
 export async function fetchArtworksBatch(
     ids: number[],
-    signal?: AbortSignal
+    signal?: AbortSignal,
+    concurrency = 5
 ): Promise<Artwork[]> {
     const results: Artwork[] = [];
 
-    for (const id of ids) {
-        try {
-            const res = await fetch(
-                `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
-                { signal }
+    try {
+        for (let i = 0; i < ids.length; i += concurrency) {
+            const chunk = ids.slice(i, i + concurrency);
+
+            const promises = chunk.map(async (id) => {
+                try {
+                    const res = await fetch(
+                        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`,
+                        { signal }
+                    );
+
+                    if (!res.ok) {
+                        if (import.meta.env.DEV) {
+                            console.warn(`Failed to fetch artwork ${id}`);
+                        }
+                        return null;
+                    }
+
+                    const data = await res.json();
+                    return mapArtwork(data);
+                } catch (error: any) {
+                    if (error.name === "AbortError") throw error;
+                    return null;
+                }
+            });
+
+            const chunkResults = await Promise.all(promises);
+
+            const validResults = chunkResults.filter(
+                (item): item is Artwork => item !== null
             );
 
-            if (!res.ok) continue;
-
-            const data = await res.json();
-            results.push(mapArtwork(data));
-
-            // ✅ throttle requests (VERY IMPORTANT)
-            await new Promise((r) => setTimeout(r, 80));
-        } catch (error: any) {
-            if (error.name === "AbortError") break;
+            results.push(...validResults);
         }
+    } catch (error: any) {
+        if (error.name === "AbortError") {
+            return results; // return partial data
+        }
+
+        throw error;
     }
 
     return results;

@@ -1,6 +1,4 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { FilterModel } from "../types/filter";
-import type { Artwork } from "../types/artwork";
 import artworkService from "../services/artworkService";
 
 const PAGE_SIZE = 20;
@@ -14,7 +12,7 @@ export function useInfiniteArtworks(ids: number[]) {
             // 2️⃣ Slice IDs for current page
             const pageIds = ids.slice(pageParam, pageParam + PAGE_SIZE);
 
-            // 3️⃣ 🚨 IMPORTANT: use batch instead of parallel queries
+            // 3️⃣ Use batch instead of parallel queries
             const artworks = await artworkService.fetchArtworksBatch(
                 pageIds,
                 signal

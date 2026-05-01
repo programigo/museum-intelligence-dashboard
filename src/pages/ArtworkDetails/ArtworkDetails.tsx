@@ -6,11 +6,13 @@ import { useDepartments } from "../../hooks/useDepartments";
 import { useMemo } from "react";
 import { useInfiniteArtworksSearch } from "../../hooks/useInfiniteArtworkSearch";
 import type { Artwork } from "../../types/artwork";
-import ArtworkImage from "./ArtworkImage";
+import noImgPlaceholder from "../../assets/no-image-details.svg";
 import ArtworkInfo from "./ArtworkInfo";
 import ArtworkTags from "./ArtworkTags";
 import RelatedArtworks from "./RelatedArtworks";
 import ArtworkDetailsSkeleton from "./skeletons/ArtworkDetailsSkeleton";
+import ArtworkImageContainer from "../../components/ArtworkImageContainer";
+import FavoriteIcon from "../../components/FavoriteIcon";
 
 export default function ArtworkDetails() {
     const { id: artworkId } = useParams<{ id: string }>();
@@ -80,6 +82,8 @@ export default function ArtworkDetails() {
         return <p className="p-6">Artwork not found</p>;
     }
 
+    const artworkImgSrc = artwork.images.large;
+
     return (
         <div className="p-6 max-w-7xl mx-auto">
 
@@ -97,10 +101,27 @@ export default function ArtworkDetails() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
                 {/* Image */}
-                <ArtworkImage
-                    src={artwork.images.large}
-                    alt={artwork.title}
-                />
+                <ArtworkImageContainer className="bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center min-h-[400px]">
+                    {artworkImgSrc ? (
+                        <>
+                            <img
+                                src={artworkImgSrc}
+                                alt={artwork.title}
+                                className="max-h-[500px] w-auto object-contain"
+                            />
+
+                        </>
+                    ) : (
+                        <img
+                            src={noImgPlaceholder}
+                            alt="No image available"
+                            className="w-full h-full object-contain p-8 opacity-80"
+                        />
+                    )}
+                    <div className="absolute top-3 right-3 z-10">
+                        <FavoriteIcon artworkId={artwork.id} />
+                    </div>
+                </ArtworkImageContainer>
 
                 {/* Info */}
                 <ArtworkInfo artwork={artwork} />
