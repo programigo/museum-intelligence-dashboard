@@ -54,7 +54,7 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                 {/* Date + Sort */}
                 <div className="w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-center gap-4">
                     {/* Date Range */}
-                    <div className="w-full md:w-auto flex flex-wrap md:flex-nowrap items-center gap-2 border px-3 py-2 rounded-lg">
+                    <div className="w-full md:w-auto flex md:flex-nowrap items-center gap-2 border px-3 py-2 rounded-lg">
                         {/* From */}
                         <input
                             type="number"
