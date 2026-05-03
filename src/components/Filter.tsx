@@ -63,7 +63,7 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                             onChange={(e) =>
                                 onChange({ ...filters, dateBegin: e.target.value })
                             }
-                            className="w-20 outline-none bg-transparent"
+                            className="w-15 outline-none bg-transparent"
                         />
 
                         <select
@@ -90,7 +90,7 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                             onChange={(e) =>
                                 onChange({ ...filters, dateEnd: e.target.value })
                             }
-                            className="w-20 outline-none bg-transparent"
+                            className="w-15 outline-none bg-transparent"
                         />
 
                         <select
