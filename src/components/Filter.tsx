@@ -25,7 +25,7 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                     placeholder="Search artworks..."
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    className="flex-1 min-w-[200px] border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    className="w-full md:flex-1 min-w-0 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
                 />
 
                 {/* Department */}
@@ -51,69 +51,73 @@ export default function Filter({ departments, isLoadingDepartments, filters, onC
                     ))}
                 </select>
 
-                {/* Date Range */}
-                <div className="flex items-center gap-2 border px-3 py-2 rounded-lg">
+                {/* Date + Sort */}
+                <div className="w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-center gap-4">
+                    {/* Date Range */}
+                    <div className="w-full md:w-auto flex flex-wrap md:flex-nowrap items-center gap-2 border px-3 py-2 rounded-lg">
+                        {/* From */}
+                        <input
+                            type="number"
+                            placeholder="From"
+                            value={filters.dateBegin ?? ""}
+                            onChange={(e) =>
+                                onChange({ ...filters, dateBegin: e.target.value })
+                            }
+                            className="w-20 outline-none bg-transparent"
+                        />
 
-                    {/* From */}
-                    <input
-                        type="number"
-                        placeholder="From"
-                        value={filters.dateBegin ?? ""}
-                        onChange={(e) =>
-                            onChange({ ...filters, dateBegin: e.target.value })
-                        }
-                        className="w-20 outline-none"
-                    />
+                        <select
+                            value={filters.dateBeginEra}
+                            onChange={(e) =>
+                                onChange({
+                                    ...filters,
+                                    dateBeginEra: e.target.value as "BC" | "AD",
+                                })
+                            }
+                            className="outline-none bg-transparent"
+                        >
+                            <option value="BC">B.C.</option>
+                            <option value="AD">A.D.</option>
+                        </select>
 
-                    <select
-                        value={filters.dateBeginEra}
-                        onChange={(e) =>
-                            onChange({
-                                ...filters,
-                                dateBeginEra: e.target.value as "BC" | "AD",
-                            })
-                        }
-                        className="outline-none"
-                    >
-                        <option value="BC">B.C.</option>
-                        <option value="AD">A.D.</option>
-                    </select>
+                        <span className="text-gray-400">—</span>
 
-                    <span className="text-gray-400">—</span>
+                        {/* To */}
+                        <input
+                            type="number"
+                            placeholder="To"
+                            value={filters.dateEnd ?? ""}
+                            onChange={(e) =>
+                                onChange({ ...filters, dateEnd: e.target.value })
+                            }
+                            className="w-20 outline-none bg-transparent"
+                        />
 
-                    {/* To */}
-                    <input
-                        type="number"
-                        placeholder="To"
-                        value={filters.dateEnd ?? ""}
-                        onChange={(e) =>
-                            onChange({ ...filters, dateEnd: e.target.value })
-                        }
-                        className="w-20 outline-none"
-                    />
+                        <select
+                            value={filters.dateEndEra}
+                            onChange={(e) =>
+                                onChange({
+                                    ...filters,
+                                    dateEndEra: e.target.value as "BC" | "AD",
+                                })
+                            }
+                            className="outline-none bg-transparent"
+                        >
+                            <option value="BC">B.C.</option>
+                            <option value="AD">A.D.</option>
+                        </select>
+                    </div>
 
-                    <select
-                        value={filters.dateEndEra}
-                        onChange={(e) =>
-                            onChange({
-                                ...filters,
-                                dateEndEra: e.target.value as "BC" | "AD",
-                            })
-                        }
-                        className="outline-none"
-                    >
-                        <option value="BC">B.C.</option>
-                        <option value="AD">A.D.</option>
-                    </select>
-
+                    {/* Sort */}
                     <select
                         value={filters.sortByDate}
-                        onChange={(e) => onChange(
-                            {
+                        onChange={(e) =>
+                            onChange({
                                 ...filters,
-                                sortByDate: e.target.value as "Newest_First" | "Oldest_First"
+                                sortByDate: e.target.value as "Newest_First" | "Oldest_First",
                             })
                         }
+                        className="w-full md:w-[180px] min-w-0 border px-3 py-2 rounded-lg bg-transparent"
                     >
                         <option value="Newest_First">Newest first</option>
                         <option value="Oldest_First">Oldest first</option>
